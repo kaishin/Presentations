@@ -1,4 +1,8 @@
 /*:
+ ## Functional Programming & DSLs
+ - Languages that support functional programming lend themselves particularly well to building DSLs.
+ - The benefit of using functional pipelines that are immutable and predictable.
+ - Possibility to compose at different API layers, for instance using function composition and other forms of framework defined composition mechanisms.
  ## Result Builders
  - Initially called "function builders"
  - Introduced in Swift 5.4 (spring 2021) after the review process of proposal [SE-0289](https://github.com/apple/swift-evolution/blob/main/proposals/0289-result-builders.md)

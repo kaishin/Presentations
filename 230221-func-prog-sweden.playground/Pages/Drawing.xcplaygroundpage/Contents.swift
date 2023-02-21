@@ -85,15 +85,16 @@ struct ShapeCanvas {
 //: Finally we implement a render method that will interface with the UI framework.
   @ViewBuilder
   func render() -> some View {
-    let colors = [Color.purple, .green, .yellow, .red, .blue]
-
     ZStack {
-      ForEach(shapes, id: \.id) { shape in
-        shape.draw()
-          .stroke(colors.randomElement()!, lineWidth: 10)
+      ForEach(
+        Array(shapes.enumerated()),
+        id: \.element.id
+      ) { shape in
+        shape.element.draw()
+          .stroke(shape.offset.isMultiple(of: 2) ? .gray : .primary, lineWidth: 10)
           .frame(
-            width: shape.size.width,
-            height: shape.size.height
+            width: shape.element.size.width,
+            height: shape.element.size.height
           )
       }
     }
@@ -114,13 +115,42 @@ ShapeCanvas(draw: twoSquares)
 
 let drawing_2 = ShapeCanvas {
   Square(size: .init(width: 100, height: 100))
+  Square(size: .init(width: 150, height: 150))
   Square(size: .init(width: 200, height: 200))
+  Square(size: .init(width: 250, height: 250))
   Square(size: .init(width: 300, height: 300))
+  Square(size: .init(width: 350, height: 350))
   Square(size: .init(width: 400, height: 400))
-  Square(size: .init(width: 500, height: 500))
+  Square(size: .init(width: 450, height: 450))
 }
 drawing_2
-//: Let's define another type that conforms to `Drawable`.
+//: This looks promising. But repeating the same line of code five times isn't. Let's try to add a for loop:
+//ShapeCanvas {
+//  for i in (0...20) {
+//    Square(size: .init(width: i * 20, height: i * 20))
+//  }
+//}
+//: This doesn't work out of the box. Just like optionals, we need to explicitly add support for _for loops_.
+//: We can do this by extending our `ShapeBuilder` type with a `buildArray` method:
+extension ShapeBuilder {
+  static func buildArray(_ components: [[any Drawable]]) -> [any Drawable] {
+    components.flatMap { $0 }
+  }
+
+  static func buildPartialBlock(
+    first content: [any Drawable]
+  ) -> [any Drawable] {
+    content
+  }
+}
+
+let drawing_2_5 = ShapeCanvas {
+  for i in (0...20) {
+    Square(size: .init(width: i * 20, height: i * 20))
+  }
+}
+drawing_2_5
+//: To make this more fun, let's define another type that conforms to `Drawable`.
 struct Lozenge: Drawable {
   let id: UUID = .init()
   let size: CGSize
@@ -136,11 +166,10 @@ struct Lozenge: Drawable {
   }
 }
 let drawing_3 = ShapeCanvas {
-  Square(size: .init(width: 50, height: 50))
-  Lozenge(size: .init(width: 200, height: 200))
-  Square(size: .init(width: 250, height: 250))
-  Lozenge(size: .init(width: 400, height: 400))
-  Square(size: .init(width: 350, height: 350))
+  for i in 0...100 {
+    Square(size: .init(width: i * 60, height: i * 60))
+    Lozenge(size: .init(width: i * 80, height: i * 80))
+  }
 }
 drawing_3
 //: We can conform _any_ type to `Drawable` to extend our shape builder.
