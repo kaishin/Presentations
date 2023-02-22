@@ -1,2 +1,2 @@
 # Presentations
-Slides of my previous talks.
+Slides and playgrounds used in my previous talks.
