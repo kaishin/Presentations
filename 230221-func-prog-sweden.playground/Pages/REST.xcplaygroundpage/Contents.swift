@@ -23,7 +23,9 @@ typealias RequestTransform = (Request) throws -> (Request)
 //: We can then create result builder that builds transforms:
 @resultBuilder
 struct RequestBuilder {
-  static func buildBlock(_ components: RequestTransform...) -> RequestTransform {
+  static func buildBlock(
+    _ components: RequestTransform...
+  ) -> RequestTransform {
     {
       try components.reduce($0) { transformed, component in
         return try component(transformed)
@@ -89,7 +91,9 @@ func auth(_ token: String) -> RequestTransform {
 //: This new builder can now be used in our methods.
 /// List all users.
 @RequestBuilder
-func usersEndpoint(token: String) -> RequestTransform {
+func usersEndpoint(
+  token: String
+) -> RequestTransform {
   auth(token)
   requestPath("/users")
   requestMethod("GET")
@@ -152,6 +156,7 @@ func GET() -> RequestTransform {
 func usersEndpoint_v1(token: String) -> RequestTransform {
   GET()
   auth(token)
+
   betterRequestPath {
     usersRootPath
   }
@@ -193,7 +198,10 @@ func userEndpoint_v3(
   }
 }
 
-try userEndpoint_v3(token: "abc", id: 0)(.factory())
+try userEndpoint_v3(
+  token: "abc",
+  id: 182
+)(.factory())
 //: We can also define resources as an enum.
 enum Resource: String, CustomStringConvertible {
   case posts

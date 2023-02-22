@@ -91,7 +91,7 @@ struct ShapeCanvas {
         id: \.element.id
       ) { shape in
         shape.element.draw()
-          .stroke(shape.offset.isMultiple(of: 2) ? .gray : .primary, lineWidth: 10)
+          .stroke(shape.offset.isMultiple(of: 2) ? .red : .blue, lineWidth: 10)
           .frame(
             width: shape.element.size.width,
             height: shape.element.size.height
@@ -133,7 +133,9 @@ drawing_2
 //: This doesn't work out of the box. Just like optionals, we need to explicitly add support for _for loops_.
 //: We can do this by extending our `ShapeBuilder` type with a `buildArray` method:
 extension ShapeBuilder {
-  static func buildArray(_ components: [[any Drawable]]) -> [any Drawable] {
+  static func buildArray(
+    _ components: [[any Drawable]]
+  ) -> [any Drawable] {
     components.flatMap { $0 }
   }
 
@@ -215,14 +217,13 @@ struct StackingShapeCanvas: CustomPlaygroundDisplayConvertible {
     VStack(spacing: 10) {
       ForEach(shapes, id: \.id) { shape in
         shape.draw()
-          .fill(.primary)
+          .fill(.gray)
           .frame(
             width: shape.size.width,
             height: shape.size.height
           )
       }
     }
-//    .frame(width: 500, height: 500)
   }
 
   @MainActor

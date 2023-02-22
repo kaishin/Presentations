@@ -16,7 +16,9 @@ import Foundation
 struct StringBuilder {
   // The only requirement.
   // `buildBlock` combines multiple partial results into one.
-  static func buildBlock(_ components: String...) -> String {
+  static func buildBlock(
+    _ components: String...
+  ) -> String {
     components.joined(separator: " ")
   }
 }
@@ -28,6 +30,7 @@ struct StringBuilder {
 func helloWorld() -> String {
   "Hello"
   "world"
+  "2023"
 }
 
 helloWorld()
@@ -59,11 +62,14 @@ func draft_countLabel(
 //: `buildExpression` wraps every bare expression before passing it to `buildBlock`.
 //: - It allows you to support _multiple inputs_.
 extension StringBuilder {
-  static func buildExpression(_ expression: Int) -> String {
+  static func buildExpression(
+    _ expression: Int
+  ) -> String {
     expression.description
   }
 
-  static func buildExpression(_ expression: String) -> String {
+  static func buildExpression(_ expression: String
+  ) -> String {
     expression
   }
 }
@@ -86,7 +92,7 @@ func draft_advancedCountLabel(
   countableSingular: String,
   countablePlural: String
 ) -> String {
-  count
+//  count
 //  if count == 1 {
 //    countableSingular
 //  } else {
